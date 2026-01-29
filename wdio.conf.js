@@ -2,7 +2,7 @@ import { readFileSync, rmSync } from 'fs';
 import { execSync } from 'child_process';
 import { tmpdir } from 'os';
 
-const EXTENSION_NAME = 'my-extension';
+const EXTENSION_NAME = 'webdriverio-browser-extension';
 
 export const config = {
 	capabilities: [
@@ -28,29 +28,29 @@ export const config = {
 	},
 
 	onPrepare: function() {
-		extensionCreateFirefox(EXTENSION_NAME);
+		extensionCreateFirefox();
 	},
 
 	before: async function() {
-		await extensionLoadFirefox(EXTENSION_NAME);
+		await extensionLoadFirefox();
 
 		browser.addCommand('extensionGetId', extensionGetId);
 		browser.addCommand('extensionURL', extensionURL);
 	},
 
 	onComplete: function() {
-		extensionDeleteFirefox(EXTENSION_NAME);
+		extensionDeleteFirefox();
 	}
 };
 
 //Create Firefox extension xpi file using web-ext
-function extensionCreateFirefox(extensionName) {
-	execSync(`npx web-ext build -s ./src/ -a ${tmpdir()} -n ${extensionName}.xpi`);
+function extensionCreateFirefox() {
+	execSync(`npx web-ext build -s ./src/ -a ${tmpdir()} -n ${EXTENSION_NAME}.xpi`);
 }
 
-async function extensionLoadFirefox(extensionName) {
+async function extensionLoadFirefox() {
 	if (browser.capabilities.browserName === 'firefox') {
-		await browser.installAddOn(readFileSync(`${tmpdir()}/${extensionName}.xpi`).toString('base64'), true);
+		await browser.installAddOn(readFileSync(`${tmpdir()}/${EXTENSION_NAME}.xpi`).toString('base64'), true);
 	}
 }
 
@@ -107,6 +107,6 @@ async function extensionURLChromium(extensionId, url) {
 }
 
 //Delete Firefox extension xpi file
-function extensionDeleteFirefox(extensionName) {
-	rmSync(`${tmpdir()}/${extensionName}.xpi`);
+function extensionDeleteFirefox() {
+	rmSync(`${tmpdir()}/${EXTENSION_NAME}.xpi`);
 }
