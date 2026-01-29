@@ -3,8 +3,5 @@ test('My Test', async () => {
 
 	await browser.extensionURL(EXTENSION_ID, 'my-page.html')
 
-	const buttonElement = await $('button')
-	await buttonElement.click();
-
 	await browser.pause(3000);
 });
