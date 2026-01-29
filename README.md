@@ -2,7 +2,7 @@ A simple example of how to load extensions into firefox browser and chromium bro
 
 # Setup
 
-``
+```
 git clone https://github.com/trymeouteh/webdriverio-extension-firefox-chromium-example
 cd webdriverio-extension-firefox-chromium-example
 npm i
